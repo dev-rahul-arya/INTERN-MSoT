@@ -1,0 +1,188 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+@layer base {
+  :root {
+    --background: 210 40% 96%;
+    --foreground: 220 20% 20%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 220 20% 20%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 220 20% 20%;
+
+    --primary: 210 100% 50%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 200 80% 92%;
+    --secondary-foreground: 210 100% 40%;
+
+    --muted: 210 30% 90%;
+    --muted-foreground: 220 10% 50%;
+
+    --accent: 35 100% 55%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 210 20% 88%;
+    --input: 210 20% 88%;
+    --ring: 210 100% 50%;
+
+    --radius: 1rem;
+
+    /* Weather-specific tokens */
+    --weather-gradient-start: 210 80% 70%;
+    --weather-gradient-end: 200 70% 85%;
+    --glass-bg: 0 0% 100% / 0.6;
+    --glass-border: 0 0% 100% / 0.3;
+    --glass-shadow: 220 60% 30% / 0.08;
+
+    /* Dynamic weather backgrounds */
+    --weather-clear-day-start: 200 90% 65%;
+    --weather-clear-day-end: 45 100% 75%;
+    --weather-clear-night-start: 230 50% 20%;
+    --weather-clear-night-end: 260 40% 35%;
+    --weather-cloudy-start: 210 20% 70%;
+    --weather-cloudy-end: 200 15% 80%;
+    --weather-rainy-start: 210 40% 45%;
+    --weather-rainy-end: 220 35% 60%;
+    --weather-snowy-start: 200 30% 85%;
+    --weather-snowy-end: 210 25% 95%;
+    --weather-stormy-start: 250 30% 25%;
+    --weather-stormy-end: 220 40% 40%;
+
+    /* AQI colors */
+    --aqi-good: 142 70% 45%;
+    --aqi-moderate: 45 100% 50%;
+    --aqi-unhealthy: 25 100% 50%;
+    --aqi-very-unhealthy: 0 80% 55%;
+    --aqi-hazardous: 300 60% 40%;
+
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .dark {
+    --background: 220 30% 10%;
+    --foreground: 210 40% 98%;
+
+    --card: 220 25% 14%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 220 25% 14%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 210 100% 60%;
+    --primary-foreground: 220 30% 10%;
+
+    --secondary: 220 25% 20%;
+    --secondary-foreground: 210 100% 70%;
+
+    --muted: 220 20% 18%;
+    --muted-foreground: 215 20% 65%;
+
+    --accent: 35 100% 55%;
+    --accent-foreground: 220 30% 10%;
+
+    --destructive: 0 62% 50%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 220 20% 22%;
+    --input: 220 20% 22%;
+    --ring: 210 100% 60%;
+
+    --weather-gradient-start: 220 40% 20%;
+    --weather-gradient-end: 230 35% 30%;
+    --glass-bg: 220 30% 18% / 0.7;
+    --glass-border: 0 0% 100% / 0.1;
+    --glass-shadow: 0 0% 0% / 0.3;
+
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+}
+
+@layer utilities {
+  .glass {
+    @apply backdrop-blur-xl border;
+    background: hsl(var(--glass-bg));
+    border-color: hsl(var(--glass-border));
+    box-shadow: 0 8px 32px hsl(var(--glass-shadow));
+  }
+
+  .weather-gradient {
+    background: linear-gradient(
+      135deg,
+      hsl(var(--weather-gradient-start)) 0%,
+      hsl(var(--weather-gradient-end)) 100%
+    );
+  }
+
+  .weather-bg-clear-day {
+    background: linear-gradient(135deg, hsl(var(--weather-clear-day-start)) 0%, hsl(var(--weather-clear-day-end)) 100%);
+  }
+
+  .weather-bg-clear-night {
+    background: linear-gradient(135deg, hsl(var(--weather-clear-night-start)) 0%, hsl(var(--weather-clear-night-end)) 100%);
+  }
+
+  .weather-bg-cloudy {
+    background: linear-gradient(135deg, hsl(var(--weather-cloudy-start)) 0%, hsl(var(--weather-cloudy-end)) 100%);
+  }
+
+  .weather-bg-rainy {
+    background: linear-gradient(135deg, hsl(var(--weather-rainy-start)) 0%, hsl(var(--weather-rainy-end)) 100%);
+  }
+
+  .weather-bg-snowy {
+    background: linear-gradient(135deg, hsl(var(--weather-snowy-start)) 0%, hsl(var(--weather-snowy-end)) 100%);
+  }
+
+  .weather-bg-stormy {
+    background: linear-gradient(135deg, hsl(var(--weather-stormy-start)) 0%, hsl(var(--weather-stormy-end)) 100%);
+  }
+
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  .text-gradient {
+    background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--accent)) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+}
