@@ -1,0 +1,322 @@
+{
+  "name": "05 Physiotherapy Doctor",
+  "nodes": [
+    {
+      "parameters": {
+        "public": true,
+        "initialMessages": "Hi there! 👋\nMy name is DR. Strange, your physiotherapy booking assistant. How can I assist you today?",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        0,
+        0
+      ],
+      "id": "408193ff-39a1-48c0-afae-ad457c527e1f",
+      "name": "When chat message received",
+      "webhookId": "ae27d68d-469b-4b8a-b32f-adde9aa103bd"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "=#Role\nYou are a smart and helpful receptionist agent for DR Stephen Strange Physiotherapy clinic.\n\n#How to behave / What to do\n- Always greet the patients with the message, \"Welcome to DR Strange's clinic. How can I help you?\"\n- The patients will try to schedule an appointment with DR Strange. You have to check for the free slots on DR Strange's calendar using tools and suggest the paitient with the available time slots for the requested date.\n- Once they confirm the slot, you have to block the calendar using tools.\n\n#Tools available\n- create new events: Use this tool to block the calendar. Before blocking the calendar, use the 'get events' tool to check for available slots.\n- get events: Use this stool to look for the events on the calendar. This will give you an idea or the available slots.\n\n#Tone\n- Be professional, polite, caring.\n\n#Important Information\n- Current date and time: {{ $now }}\n- The wrking timings are 9am to 5pm. If the patient is asking for a slot before 9am or after 6pm, tell them to book the slot for another day.\n- Don't give slots for a Saturday, Sunday and public holiday's.\n- Don't give any slots between 1pm to 2pm because this is doctor's lunch time.\n- Block the slot for 30 minutes only. Don't give more time than that.\n- Buffer time: 30 minutes between appointments.\n\n#Note\n- The system should handle \n  1. checking availability\n  2. Booking appointments\n  3. Sending confirmations (via mail)\n  4. Handling conflicts or rescheduling\n- For email\n  1. Get name and mail id from user.\n  2. Use gmail to send them a personalized message.\n  3. Prepare To, Subject, Message.\n- Time zome: GMT +5:30 Asia/Kolkata"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        208,
+        0
+      ],
+      "id": "c9838caf-d685-4d22-b828-fb4fc9116ca5",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4.1-mini",
+          "mode": "id"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        80,
+        208
+      ],
+      "id": "cb8be8c6-ac3d-4e2d-9504-ab8dcfc595b9",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "jvDD4UV9cGahJ1nq",
+          "name": "n8n free OpenAI API credits"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        224,
+        208
+      ],
+      "id": "b014e864-fdc2-4583-986e-cafddd4f95f2",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1VKeDH0wNbHYSaYXd3F4Y7ELMq8TtyEqrKmCblh6U4hs",
+          "mode": "list",
+          "cachedResultName": "MSoT - Form Submission",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1VKeDH0wNbHYSaYXd3F4Y7ELMq8TtyEqrKmCblh6U4hs/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 72155974,
+          "mode": "list",
+          "cachedResultName": "Physiotherapy Doctor",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1VKeDH0wNbHYSaYXd3F4Y7ELMq8TtyEqrKmCblh6U4hs/edit#gid=72155974"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Name": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Name', ``, 'string') }}",
+            "Time Slot": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Time_Slot', ``, 'string') }}",
+            "Contact": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Contact', ``, 'string') }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Time Slot",
+              "displayName": "Time Slot",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Contact",
+              "displayName": "Contact",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        368,
+        208
+      ],
+      "id": "93990048-e895-4b15-a8b9-b9066ad3d72f",
+      "name": "Log Appointments",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "MP2lGG6C3WpYQdkV",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "calendar": {
+          "__rl": true,
+          "value": "geekyroll123@gmail.com",
+          "mode": "list",
+          "cachedResultName": "geekyroll123@gmail.com"
+        },
+        "returnAll": true,
+        "timeMin": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('After', ``, 'string') }}",
+        "timeMax": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Before', ``, 'string') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        528,
+        208
+      ],
+      "id": "0b25b0b1-a316-4905-bdef-519efea96f15",
+      "name": "Get Events",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "vprxuROo60IxLA0i",
+          "name": "Google Calendar account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "calendar": {
+          "__rl": true,
+          "value": "geekyroll123@gmail.com",
+          "mode": "list",
+          "cachedResultName": "geekyroll123@gmail.com"
+        },
+        "start": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Start', ``, 'string') }}",
+        "end": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('End', ``, 'string') }}",
+        "useDefaultReminders": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Use_Default_Reminders', ``, 'boolean') }}",
+        "additionalFields": {
+          "summary": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Summary', ``, 'string') }}"
+        }
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        688,
+        192
+      ],
+      "id": "4ad9806e-26fb-49de-add2-df5010d20ba6",
+      "name": "Set Events",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "vprxuROo60IxLA0i",
+          "name": "Google Calendar account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('To', ``, 'string') }}",
+        "subject": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Subject', ``, 'string') }}",
+        "message": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Message', ``, 'string') }}",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmailTool",
+      "typeVersion": 2.2,
+      "position": [
+        848,
+        176
+      ],
+      "id": "c5f2ce74-32af-4f70-b067-e3c8d702ed0d",
+      "name": "Send a message in Gmail",
+      "webhookId": "18da0cb2-ea1a-4de5-81f1-12ab8d49d24e",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "UOYlRB4anziVwojc",
+          "name": "Gmail account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Log Appointments": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Events": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Events": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message in Gmail": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false
+  },
+  "versionId": "bc8b3ba2-c54e-4527-99db-3d02f4c16d3b",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "eeb6598bbd467eef75731070812d4d907a45a2516092c11031c9695f61c950dd"
+  },
+  "id": "8PDZ1-HQsTJeuTgyEf-p5",
+  "tags": []
+}

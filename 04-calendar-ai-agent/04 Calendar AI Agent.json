@@ -1,0 +1,162 @@
+{
+  "name": "04 Calendar AI Agent",
+  "nodes": [
+    {
+      "parameters": {
+        "public": true,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        0,
+        0
+      ],
+      "id": "177cf743-21ac-4e33-9364-a8a3d37b9cd2",
+      "name": "When chat message received",
+      "webhookId": "0f780124-f094-46e4-a351-7ab414aade7d"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "=#Role\nYou are a Google Calendar Scheduling AI Agent that helps to add, get, update or delete the calendar events.\n\n#What to do\nYour responsibility is to understand scheduling requests and convert them into structured calendar event data that can be executed using calendar tools.\n\n#Tools Available\n- create new events: Use this tool when a new event has to be created.\n\n#Important note\n-Current date and time: {{ $now }}"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        208,
+        0
+      ],
+      "id": "5feca2db-6fdd-4645-82c3-a961aacf7b52",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        80,
+        208
+      ],
+      "id": "995471b7-fa18-4e15-89fd-2eb9200a1230",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "jvDD4UV9cGahJ1nq",
+          "name": "n8n free OpenAI API credits"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "contextWindowLength": 10
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        240,
+        208
+      ],
+      "id": "385b716a-0e72-4112-bbc6-8aa40e79eb83",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "calendar": {
+          "__rl": true,
+          "value": "geekyroll123@gmail.com",
+          "mode": "list",
+          "cachedResultName": "geekyroll123@gmail.com"
+        },
+        "start": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Start', ``, 'string') }}",
+        "end": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('End', ``, 'string') }}",
+        "useDefaultReminders": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Use_Default_Reminders', ``, 'boolean') }}",
+        "additionalFields": {
+          "summary": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Summary', ``, 'string') }}"
+        }
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        416,
+        208
+      ],
+      "id": "163c6cf5-f088-4bb2-ad21-ea6ea2433e74",
+      "name": "Create an event in Google Calendar",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "vprxuROo60IxLA0i",
+          "name": "Google Calendar account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create an event in Google Calendar": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false
+  },
+  "versionId": "4c30c656-d643-41fd-8a33-b8cf789f4996",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "eeb6598bbd467eef75731070812d4d907a45a2516092c11031c9695f61c950dd"
+  },
+  "id": "vUFg4r50O8aIZ6_Rvuk1G",
+  "tags": []
+}
